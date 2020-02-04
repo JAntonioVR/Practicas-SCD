@@ -1,0 +1,48 @@
+class Barberia
+begin
+    private:
+        var
+            salaEspera      :CondVar
+            sillon          :CondVar
+            barbero         :CondVar
+
+    public:
+        process
+            //Procedimientos del barbero
+
+            siguienteCliente[]
+            finCliente[]
+
+            //Procedimientos del cliente
+            cortarPelo[i :integer]
+            
+
+end
+
+
+process llamarCliente[]
+begin
+    if(salaEspera.empty() && sillon.empty())
+        barbero.wait();
+    else
+        salaEspera.signal()
+end
+
+process avisarCliente
+begin
+    sillon.signal()
+end
+
+process entrarBarberia
+begin
+    if( salaEspera.empty() && sillon.empty() )
+        barbero.signal()
+    else
+        salaEspera.wait()
+end
+
+process esperarCorteDePelo
+begin
+    sillon.wait()
+end
+
