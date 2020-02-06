@@ -1,0 +1,3 @@
+# Práctica 1
+
+En esta carpeta se proporcionan los distintos códigos ya completados de cara al problema del productor-consumidor y al problema de los fumadores, y en la carpeta `practicaExamenes` una serie de problemas y ejercicios que hice para estudiar de cara al examen de la práctica 1 (cada código incluye una breve descripción de lo que hace). Destacar que el archivo `estancos2.cpp` corresponde al examen de la práctica 1.
