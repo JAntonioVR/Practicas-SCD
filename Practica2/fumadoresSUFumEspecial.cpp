@@ -1,3 +1,11 @@
+/* Problema para practicar:
+ * Consiste en el problema de los fumadores pero en este caso hay un fumador
+ * especial el cual cada cuatro ingredientes recogidos no puede fumar, es decir,
+ * si lleva 3 ingredientes, se puede fumar su tercer cigarro, pero si recoge su
+ * cuarto ingrediente, no se puede fumar ese cigarro, pero sí el quinto. Lo mismo
+ * ocurre con los ingredientes 8, 12, 16,...
+ */
+
 #include <iostream>
 #include <cassert>
 #include <thread>

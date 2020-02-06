@@ -1,3 +1,7 @@
+/* Problema para practicar:
+ * Consiste en el barbero durmiente pero en este caso hay varios barberos que
+ * comparten la misma cama y también el mismo sillon
+ */
 #include <iostream>
 #include <cassert>
 #include <thread>

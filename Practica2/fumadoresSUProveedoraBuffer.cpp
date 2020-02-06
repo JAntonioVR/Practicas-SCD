@@ -1,3 +1,11 @@
+/* Problema para practicar:
+ * Consiste en el problema de los fumadores incluyendo una hebra proveedora de packs.
+ * La proveedora y el estanquero comparten un buffer de M ingredientes, de forma que mientras
+ * el buffer no esté completo la proveedora insertará un pack y mientras no esté
+ * vacío el estanquero podrá sacar un pack y producir un ingrediente (Política FIFO).
+ * Nota: Muy parecido al examen de la P1 pero implementado con monitores.
+ */
+
 #include <iostream>
 #include <cassert>
 #include <thread>

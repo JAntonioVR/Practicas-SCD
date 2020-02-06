@@ -1,3 +1,11 @@
+/* Problema para practicar:
+ * Consiste en el problema de los fumadores incluyendo una hebra proveedora de M packs,
+ * cuando el estanquero vende M ingredientes avisa a la proveedora para que esta le reponga
+ * M packs más. La proveedora mientras espera a que el estanquero la avise para reponer.
+ * 
+ * Solución utilizando dos monitores
+ */
+
 #include <iostream>
 #include <cassert>
 #include <thread>

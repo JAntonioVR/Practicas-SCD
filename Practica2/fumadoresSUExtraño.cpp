@@ -1,3 +1,9 @@
+/* Problema para practicar:
+ * Consiste en el problema de los fumadores pero en este caso hay un ingrediente especial,
+ * que cuando se produce el estanco cierra y el estanquero avisa a todos los clientes de
+ * que el estanco está cerrado, terminando así la ejecución del programa.
+ */
+
 #include <iostream>
 #include <cassert>
 #include <thread>

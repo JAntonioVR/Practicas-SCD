@@ -35,7 +35,7 @@ x9: fumadoresSUExtraño_exe
 x10: fumadoresSU2monitores_exe
 	./$<
 
-x11: NBarberos1Cama1sillon_exe
+x11: barberoDurmienteNBarberos1Cama1sillon_exe
 	./$<
 
 x12: barberoDurmienteProveedor_exe
@@ -89,7 +89,7 @@ fumadoresSUExtraño_exe: fumadoresSUExtraño.cpp $(hmonsrcs)
 fumadoresSU2monitores_exe: fumadoresSU2monitores.cpp $(hmonsrcs)
 	$(compilador) $(opcionesc)  -o $@ $< HoareMonitor.cpp Semaphore.cpp
 
-NBarberos1Cama1sillon_exe: NBarberos1Cama1sillon.cpp $(hmonsrcs)
+barberoDurmienteNBarberos1Cama1sillon_exe: barberoDurmienteNBarberos1Cama1sillon.cpp $(hmonsrcs)
 	$(compilador) $(opcionesc)  -o $@ $< HoareMonitor.cpp Semaphore.cpp
 
 barberoDurmienteProveedor_exe: barberoDurmienteProveedor.cpp $(hmonsrcs)

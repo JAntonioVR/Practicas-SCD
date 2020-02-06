@@ -1,3 +1,7 @@
+/* Problema para practicar:
+ * Consiste en el problema de los fumadores pero con varios estanqueros 
+ * y cada estanquero tiene su propio mostrador
+ */
 #include <iostream>
 #include <cassert>
 #include <thread>
