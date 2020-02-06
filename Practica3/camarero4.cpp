@@ -1,3 +1,18 @@
+/* Examen P3:
+ * Sobre el problema de los filósofos con camarero. En este caso cada filósofo al
+ * solicitar sentarse envía al camarero un vector de tamaño aleatorio entre 1 y 5
+ * (da igual el contenido, importa la capacidad), y el camarero debe recibir este
+ * vector a modo de solicitud, almacenando la suma de los tamaños de los distintos
+ * vectores de los distintos filosofos que se van sentando y cada vez que dicha suma
+ * supera 10 unidades el camarero debe imprimir un mensaje diciendo:
+ * "He alcanzado ya (...) unidades en total de propina!!!"
+ * Por ejemplo, si recibe un vector de tamaño 3, uno de tamaño 5 y uno de tamaño 4
+ * llevando 0 unidades de propina imprimirá
+ * "He alcanzado ya 12 unidades en total de propina!!!"
+ * Si después se reciben dos vectores de tamaño 5 se imprimirá (pues se ha superado el 20)
+ * "He alcanzado ya 22 unidades en total de propina!!!"
+ */ 
+
 // -----------------------------------------------------------------------------
 //
 // Sistemas concurrentes y Distribuidos.
@@ -51,17 +66,21 @@ void funcion_filosofos( int id )
     int id_ten_izq = (id+1)              % (num_procesos-1), //id. tenedor izq.
         id_ten_der = (id+num_procesos-2) % (num_procesos-1), //id. tenedor der.
         id_camarero = num_procesos-1,
-        valor = 0;
+        valor = 0,
+        tam      ;
+    int * vec;
 
     while ( true )
     {
-        // Declaro el vector de tamaño aleatorio
-        int tam = aleatorio<1, 5>();
-        int vec[tam];
+        // Vector de tamaño aleatorio
+        tam = aleatorio<1, 5>();
+        vec = new int[tam];
 
         // El filosofo solicita sentarse mediante el vector declarado
         cout << "Filosofo " << id/2 << " solicita sentarse" << endl;
         MPI_Ssend(&vec, tam, MPI_INT, id_camarero, ETIQ_SENTARSE, MPI_COMM_WORLD);
+
+        delete vec;
 
         cout <<"Filósofo " << id/2 << " se sienta y solicita ten. izq." <<id_ten_izq <<endl;
         // ... solicitar tenedor izquierdo
