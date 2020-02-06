@@ -14,4 +14,4 @@ se corresponden con los códigos requeridos por las prácticas correspondientes 
 
 El archivo `camarero4.cpp` es el archivo del examen de la práctica 3 (incluye descripción del enunciado).
 
-El resto de archivos son ejercicios de examenes de años anteriores o inventados por mí que hice para prácticar de cara al examen de la práctica 3.
+El resto de archivos son ejercicios de examenes de años anteriores o inventados por mí que hice para prácticar de cara al examen de la práctica 3 (incluyen descripción de lo que hace cada uno).
