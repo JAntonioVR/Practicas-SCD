@@ -1,3 +1,14 @@
+/* Problema para practicar:
+ * Sobre el problema del productor-consumidor, en este caso hay dos tipos diferentes
+ * de productores según su paridad. El proceso buffer por su parte gestiona dos modos
+ * diferentes a la hora de recibir un valor por parte de un productor. Si la variable
+ * modo1 está a true, entonces en caso de recibir un mensaje de un productor solo
+ * puede recibir un mensaje de un productor de tipo 1, y si está a false, entonces en
+ * caso de recibir un mensaje de un productor solo puede recibir mensaje de un productor
+ * de tipo 2.
+ *
+ */ 
+
 // -----------------------------------------------------------------------------
 //
 // Sistemas concurrentes y Distribuidos.

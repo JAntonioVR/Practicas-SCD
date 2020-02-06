@@ -3,11 +3,11 @@
 // Sistemas concurrentes y Distribuidos.
 // Práctica 3. Implementación de algoritmos distribuidos con MPI
 //
-// Archivo: prodcons2.cpp
+// Archivo: prodcons2-mu.cpp
 // Implementación del problema del productor-consumidor con
 // un proceso intermedio que gestiona un buffer finito y recibe peticiones
 // en orden arbitrario
-// (versión con un único productor y un único consumidor)
+// (versión con varios productores y varios consumidores)
 //
 // Historial:
 // Actualizado a C++11 en Septiembre de 2017

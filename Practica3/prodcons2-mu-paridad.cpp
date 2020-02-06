@@ -1,13 +1,15 @@
+/* Problema para practicar:
+ * Sobre el problema del productor-consumidor, en este caso hay dos tipos diferentes
+ * de consumidores, unos consumen solo valores pares y otros solo valores impares,
+ * de forma que cada vez que el proceso buffer tiene que enviar un valor a un consumidor
+ * debe asegurarse que se envía a un consumidor adecuado de acuerdo a su paridad.
+ *
+ */ 
+
 // -----------------------------------------------------------------------------
 //
 // Sistemas concurrentes y Distribuidos.
 // Práctica 3. Implementación de algoritmos distribuidos con MPI
-//
-// Archivo: prodcons2.cpp
-// Implementación del problema del productor-consumidor con
-// un proceso intermedio que gestiona un buffer finito y recibe peticiones
-// en orden arbitrario
-// (versión con un único productor y un único consumidor)
 //
 // Historial:
 // Actualizado a C++11 en Septiembre de 2017

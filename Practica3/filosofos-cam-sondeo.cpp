@@ -1,11 +1,14 @@
+/* Problema para practicar
+ * Sobre el problema de los filosofos, implementar el proceso del camarero
+ * de forma que antes de recibir ningún mensaje de ningún filosofo utiliza
+ * la función iprobe en bucle hasta encontrar un mensaje que case con la siguiente
+ * llamada a receive para saber qué filósofo le enviará la próxima solicitud
+ */ 
+
 // -----------------------------------------------------------------------------
 //
 // Sistemas concurrentes y Distribuidos.
 // Práctica 3. Implementación de algoritmos distribuidos con MPI
-//
-// Archivo: filosofos-plantilla.cpp
-// Implementación del problema de los filósofos (sin camarero).
-// Plantilla para completar.
 //
 // Historial:
 // Actualizado a C++11 en Septiembre de 2017

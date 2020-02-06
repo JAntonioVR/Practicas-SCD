@@ -1,11 +1,13 @@
+/* Problema para practicar
+ * Sobre el problema de los filosofos, implementar el proceso del camarero
+ * de forma que se atienda a los filosofos por orden de su identificador, 
+ * es decir, primero al filosofo 0, después el 1, después el 2, ...
+ */ 
+
 // -----------------------------------------------------------------------------
 //
 // Sistemas concurrentes y Distribuidos.
 // Práctica 3. Implementación de algoritmos distribuidos con MPI
-//
-// Archivo: filosofos-plantilla.cpp
-// Implementación del problema de los filósofos (sin camarero).
-// Plantilla para completar.
 //
 // Historial:
 // Actualizado a C++11 en Septiembre de 2017
