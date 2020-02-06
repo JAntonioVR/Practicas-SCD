@@ -1,3 +1,11 @@
+/* Problema para practicar:
+ * Consiste en el barbero durmiente pero en este caso hay una hebra proveedora de tijeras
+ * que proporciona al barbero M tijeras nuevas y espera a un proximo aviso por parte del barbero.
+ * El barbero usa unas tijeras distintas en cada pelado y una vez las usa una vez las desecha,
+ * por lo que tiene que llamar al proveedor cada M cortes de pelo.
+ * Implementación usando dos monitores diferentes.
+ */
+
 #include <iostream>
 #include <cassert>
 #include <thread>

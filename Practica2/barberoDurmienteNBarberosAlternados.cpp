@@ -1,3 +1,9 @@
+/* Problema para practicar:
+ * Consiste en el barbero durmiente pero en este caso hay N barberos en lugar de uno
+ * solo y cada barbero atiende una tanda de clientes y una vez se duerme, el proximo
+ * barbero en despertarse y trabajar es otro diferente.
+ */
+
 #include <iostream>
 #include <cassert>
 #include <thread>
@@ -9,7 +15,7 @@
 using namespace std ;
 using namespace HM ;
 
-const int nClientes = 6,
+const int nClientes = 3,
           nBarberos = 2;
 
 mutex output;
@@ -75,8 +81,8 @@ class Barberia : public HoareMonitor{
     private:
         CondVar
             salaEspera,
-            sillon[nBarberos],
-            cama;
+            sillon,
+            barbero;
     public:
         void siguienteCliente(int i);
         void finCliente(int i);
@@ -85,21 +91,20 @@ class Barberia : public HoareMonitor{
 };
 
 void Barberia :: siguienteCliente(int i){
-    if(salaEspera.empty()){
+    if(salaEspera.empty() || !sillon.empty()){
         output.lock();
         cout << "El barbero "<< i << " se va a dormir" << endl;
         output.unlock();
 
-        cama.wait();
+        barbero.wait();
     }
     else{
+        assert(salaEspera.get_nwt()>0 && sillon.empty());
         output.lock();
         cout << "El barbero " << i << " va a llamar a alguien de la sala de espera" << endl;
         output.unlock();
-
-        salaEspera.signal();
-    }
-        
+        salaEspera.signal(); 
+    }        
 }
 
 void Barberia :: finCliente(int i){
@@ -107,28 +112,21 @@ void Barberia :: finCliente(int i){
     cout << "El barbero " << i << " despide a un cliente" << endl;
     output.unlock();
 
-    sillon[i].signal();
+    sillon.signal();
+
 }
 
 void Barberia :: cortarPelo(int i){
     int nBarbero;
-    bool barberoDisponible = false;
-    if(salaEspera.empty()){
-        for (nBarbero = 0; nBarbero < nBarberos && !barberoDisponible; nBarbero++)
-        {
-            if (sillon[nBarbero].empty())
-            {
-                output.lock();
-                cout << "\tEl cliente " << i << " despierta a un barbero " << endl;
-                output.unlock();
-                barberoDisponible = true;
-                cama.signal();
-            }   
-        } 
-    }
-    if (!barberoDisponible){ 
+    if(salaEspera.empty() && sillon.empty()){
         output.lock();
-        cout << "\tTodos los barberos están ocupados o hay gente en la sala de espera "
+        cout << "El cliente " << i << " despierta a un barbero" << endl;
+        output.unlock();
+        barbero.signal();
+    }
+    else{ 
+        output.lock();
+        cout << "\tEl sillon esta ocupado o hay gente en la sala de espera "
              << "El cliente " << i << " espera." << endl;
         output.unlock();
         salaEspera.wait();
@@ -138,15 +136,13 @@ void Barberia :: cortarPelo(int i){
     cout << "\tEl cliente " << i << " va a ser pelado" << endl;
     output.unlock();
 
-    for (nBarbero = 0; nBarbero < nBarberos && !sillon[nBarbero].empty(); nBarbero++){}
-    sillon[nBarbero].wait();
+    sillon.wait();
 }
 
 Barberia ::Barberia (){
     salaEspera = newCondVar();
-    for (int i = 0; i < nBarberos; i++)
-        sillon[i] = newCondVar();
-    cama = newCondVar();
+    sillon = newCondVar();
+    barbero = newCondVar();
 }
 
 //----------------------------------------------------------------------

@@ -1,3 +1,14 @@
+/* Examen Practica 2:
+ * Sobre el problema del barbero durmiente, implementar los cambios necesarios para que
+ * el barbero pele a sus clientes de dos en dos. Si un cliente llega a la barberia y la
+ * sala de espera está vacía o el barbero está ocupado, se sienta a esperar. Cuando
+ * llega un cliente y hay una persona más en la sala de espera, este despierta al barbero
+ * y espera. TODOS LOS CLIENTES DEBEN PASAR POR LA SALA DE ESPERA. Por su parte, el barbero
+ * si no hay al menos dos personas en la sala de espera se duerme, en caso contrario hace pasar
+ * a dos clientes y cuando ambos están sentados en el sillon, los pela simultaneamente y cuando
+ * acaba despide a los dos.
+ */ 
+
 #include <iostream>
 #include <cassert>
 #include <thread>

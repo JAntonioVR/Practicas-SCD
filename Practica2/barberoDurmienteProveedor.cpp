@@ -1,3 +1,10 @@
+/* Problema para practicar:
+ * Consiste en el barbero durmiente pero en este caso hay una hebra proveedora de tijeras
+ * que en cada pelado proporciona al barbero unas tijeras nuevas y espera a un proximo aviso
+ * por parte del barbero.
+ * Implementación usando dos monitores diferentes.
+ */
+
 #include <iostream>
 #include <cassert>
 #include <thread>
@@ -9,8 +16,7 @@
 using namespace std ;
 using namespace HM ;
 
-const int nClientes = 6;  //(Clientes 0,1,2 tipo 0 y clientes 3,4,5 tipo 1)
-                          // Un cliente n es tipo 0 si n/3==0, tipo 1 si n/3==1
+const int nClientes = 3;
 
 mutex output;
 
@@ -69,16 +75,14 @@ void esperarFueraBarberia(int i){
 }
 
 //----------------------------------------------------------------------
-// Declaración e implementación del monitor:
+// Declaración e implementación del barberia:
 
 class Barberia : public HoareMonitor{
     private:
         CondVar
-            salaEspera[2],
+            salaEspera,
             sillon,
             barbero;
-        int
-            tipoSiguiente;
     public:
         void siguienteCliente();
         void finCliente();
@@ -87,7 +91,7 @@ class Barberia : public HoareMonitor{
 };
 
 void Barberia :: siguienteCliente(){
-    if(salaEspera[tipoSiguiente].empty()){
+    if(salaEspera.empty()){
         output.lock();
         cout << "El barbero se va a dormir" << endl;
         output.unlock();
@@ -99,7 +103,7 @@ void Barberia :: siguienteCliente(){
         cout << "El barbero va a llamar a alguien de la sala de espera" << endl;
         output.unlock();
 
-        salaEspera[tipoSiguiente].signal();
+        salaEspera.signal();
     }
         
 }
@@ -110,12 +114,10 @@ void Barberia :: finCliente(){
     output.unlock();
 
     sillon.signal();
-    tipoSiguiente = (tipoSiguiente==0 ? 1 : 0);
 }
 
 void Barberia :: cortarPelo(int i){
-    int tipo = i/3;
-    if(salaEspera[tipo].empty() && sillon.empty() && tipoSiguiente==(tipo)){
+    if(salaEspera.empty() && sillon.empty()){
         output.lock();
         cout << "\tEl cliente " << i << " despierta al barbero" << endl;
         output.unlock();
@@ -123,11 +125,11 @@ void Barberia :: cortarPelo(int i){
     }
     else{
         output.lock();
-        cout << "\tHay gente en la sala de espera, el barbero esta ocupado o no toca el tipo " 
-             << tipo <<". El cliente " << i << " espera." << endl;
+        cout << "\tHay gente en la sala de espera o el barbero esta ocupado. "
+             << "El cliente " << i << " espera." << endl;
         output.unlock();
 
-        salaEspera[tipo].wait();
+        salaEspera.wait();
     }
         
     cout << "\tEl cliente " << i << " va a ser pelado" << endl;
@@ -135,28 +137,71 @@ void Barberia :: cortarPelo(int i){
 }
 
 Barberia ::Barberia (){
-    salaEspera[0] = newCondVar();
-    salaEspera[1] = newCondVar();
-    sillon  = newCondVar();
+    salaEspera = newCondVar();
+    sillon     = newCondVar();
     barbero    = newCondVar();
-    tipoSiguiente = 0;
 }
+
+//----------------------------------------------------------------------
+// barberia de la proveedora
+class Proveedora : public HoareMonitor{
+    private:
+        CondVar barbero, proveedor;
+    public:
+        void reponer();
+        void esperarReponer();
+        void recogerTijeras();
+        Proveedora();
+};
+
+void Proveedora :: reponer(){
+    output.lock();
+    cout << "\t\tLa proveedora proporciona tijeras nuevas" << endl;
+    output.unlock();
+    if(!barbero.empty())
+        barbero.signal();
+}
+
+void Proveedora :: esperarReponer(){
+    if(barbero.empty())
+       proveedor.wait(); 
+}
+
+void Proveedora :: recogerTijeras(){
+    proveedor.signal();
+    barbero.wait();
+}
+
+Proveedora :: Proveedora(){
+    barbero = newCondVar();
+    proveedor = newCondVar();
+}
+
 
 //----------------------------------------------------------------------
 // Funciones que ejecutan las hebras
 
-void funcionHebraBarbero( MRef<Barberia> monitor ){
+void funcionHebraProveedor( MRef<Proveedora> proveedora ){
     while (true){
-        monitor->siguienteCliente();
+        proveedora->esperarReponer();
+        proveedora->reponer();
+    }
+    
+}
+
+void funcionHebraBarbero( MRef<Barberia> barberia, MRef<Proveedora> proveedora ){
+    while (true){
+        barberia->siguienteCliente();
         cortarPeloACliente();
-        monitor->finCliente();
+        barberia->finCliente();
+        proveedora->recogerTijeras();
     }
 }
 
-void funcionHebraCliente( MRef<Barberia> monitor, int i ){
+void funcionHebraCliente( MRef<Barberia> barberia, int i ){
     while (true)
     {
-        monitor->cortarPelo(i);
+        barberia->cortarPelo(i);
         esperarFueraBarberia(i);
     }
 }
@@ -166,11 +211,14 @@ void funcionHebraCliente( MRef<Barberia> monitor, int i ){
 
 int main(){
     MRef<Barberia> barberia = Create<Barberia>();
-    thread hebraBarbero, hebrasClientes[nClientes];
-    hebraBarbero = thread( funcionHebraBarbero, barberia );
+    MRef<Proveedora> proveedora = Create<Proveedora>();
+    thread hebraProveedora, hebraBarbero, hebrasClientes[nClientes];
+    hebraProveedora = thread( funcionHebraProveedor, proveedora);
+    hebraBarbero = thread( funcionHebraBarbero, barberia, proveedora );
     for (unsigned i = 0; i < nClientes; i++)
         hebrasClientes[i] = thread( funcionHebraCliente, barberia, i );
     
+    hebraProveedora.join();
     hebraBarbero.join();
     for (unsigned i = 0; i < nClientes; i++)
         hebrasClientes[i].join();
