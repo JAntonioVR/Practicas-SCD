@@ -109,7 +109,7 @@ void funcion_tenedores( int id )
 
 void funcion_camarero(){
     int valor, 
-        s = 0, 
+        s = 0;
     MPI_Status estado;
 
     while (true)
